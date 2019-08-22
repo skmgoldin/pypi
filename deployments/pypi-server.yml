@@ -18,57 +18,11 @@ spec:
         - name: packages
           emptyDir: {}
       containers:
-        - image: mosquito/pypi-server:0.4.9
+        - image: pypiserver/pypiserver:1.3.x
           name: pypi-server
           ports:
-            - containerPort: 80
+            - containerPort: 8080
           volumeMounts:
             - name: packages
-              mountPath: /var/lib/pypi-server
-          env:
-            - name: DB
-              valueFrom:
-                secretKeyRef:
-                  name: pypi-server-db-auth
-                  key: login-url
-            - name: PYPI_PROXY
-              value: "0"
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: pypi-server-db
-  labels:
-    name: pypi-server-db
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      name: pypi-server-db
-  template:
-    metadata:
-      labels:
-        name: pypi-server-db
-    spec:
-      volumes:
-        - name: postgres
-          emptyDir: {}
-      containers:
-        - image: postgres
-          name: pypi-server-db
-          ports:
-            - containerPort: 5432
-          volumeMounts:
-            - name: postgres
-              mountPath: /var/lib/postgresql/data
-          env:
-            - name: POSTGRES_DB
-              value: pypi-server-db
-            - name: POSTGRES_USER
-              value: pypi-server
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: pypi-server-db-auth
-                  key: password
+              mountPath: /data/packages
 

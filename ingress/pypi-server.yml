@@ -1,8 +1,11 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: docker-registry
+  name: pypi-server
   annotations:
+    nginx.ingress.kubernetes.io/auth-type: basic
+    nginx.ingress.kubernetes.io/auth-secret: pypi-server-auth
+    nginx.ingress.kubernetes.io/auth-realm: "Authentication Required - ok"
     nginx.ingress.kubernetes.io/enable-cors: "true"
     nginx.ingress.kubernetes.io/proxy-body-size: "0"
 spec:
@@ -13,5 +16,5 @@ spec:
       - path: /
         backend:
           serviceName: pypi-server
-          servicePort: 80
+          servicePort: 8080
 
