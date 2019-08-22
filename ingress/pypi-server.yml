@@ -1,0 +1,17 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: docker-registry
+  annotations:
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+spec:
+  rules:
+  - host: pypi.hidden.computer
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: pypi-server
+          servicePort: 80
+
