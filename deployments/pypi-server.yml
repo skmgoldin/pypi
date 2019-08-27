@@ -23,6 +23,8 @@ spec:
       containers:
         - image: pypiserver/pypiserver:1.3.x
           name: pypi-server
+          command: ["pypi-server"]
+          args: ["-p", "8080", "-P", ".", "-a", ".", "/data/packages"]
           ports:
             - containerPort: 8080
           volumeMounts:
