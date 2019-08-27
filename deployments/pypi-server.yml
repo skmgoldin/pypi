@@ -14,9 +14,12 @@ spec:
       labels:
         name: pypi-server
     spec:
+      securityContext:
+        fsGroup: 9898
       volumes:
         - name: packages
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: pypi-server
       containers:
         - image: pypiserver/pypiserver:1.3.x
           name: pypi-server
